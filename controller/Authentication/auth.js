@@ -8,7 +8,7 @@ require('dotenv').config();
 exports.signup = async (req, res) => {
     try {
         //get data
-        const { firstName, lastName, email, password, userId, medicalName, licenceNumber, countryName, stateName, cityName, postalCode } = req.body;
+        const { firstName, lastName, email, password, medicalName, licenceNumber, countryName, stateName, cityName, postalCode } = req.body;
         //if already axist
         const existingUser = await User.findOne({  email });
         if (existingUser) {
