@@ -4,7 +4,14 @@ const User = require("../../models/user");
 exports.medicalnfo = async (req, res) => {
     try {
         // Get medical data
-        const { userId, medicalName, licenceNumber, countryName, stateName, cityName, postalCode } = req.body;
+        const { userId,
+                medicalName, 
+                licenceNumber, 
+                countryName, 
+                stateName, 
+                cityName, 
+                postalCode 
+              } = req.body;
 
         // Find user
         const user = await User.findById(userId);
