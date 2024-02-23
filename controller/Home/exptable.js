@@ -26,6 +26,8 @@ exports.exptable = async (req, res) => {
     expiryDate:item.expiryDate
   }));
 
+  //  console.log(expiredItems.length);
+
   const upcomingExpiredItems = items
   .filter((item) => moment(item.expiryDate).isBetween(moment(), moment().add(30, 'days'), null, '[]'))
   .map((item) => ({
@@ -35,6 +37,7 @@ exports.exptable = async (req, res) => {
     price: item.price,
     expiryDate: item.expiryDate
   }));
+  // console.log(upcomingExpiredItems.length);
   
   const safeItems = items
   .filter((item) => moment(item.expiryDate).isAfter(moment().add(30, 'days')))
@@ -45,6 +48,7 @@ exports.exptable = async (req, res) => {
     price: item.price,
     expiryDate: item.expiryDate
   }));
+  // console.log(safeItems.length);
   
 
 

@@ -110,7 +110,36 @@ const stockSchema = new mongoose.Schema({
 });
 
 
-
+//bill schema
+const billSchema = new mongoose.Schema({
+   
+    
+    vendorName:{
+        type:String,
+        require:true,
+        trim:true
+    },
+    challanNumber:{
+        type:String,
+        require:true,
+        trim:true
+    },
+    orderDate:{
+        type:Date,
+        require:true,
+        trim:true
+    },
+    dueDate:{
+        type:Date,
+        require:true,
+        trim:true
+    },
+    remark:{
+        type:String,
+        require:true,
+        trim:true
+    },
+});
 
 // Parent Schema: personalinfo
 const userSchema = new mongoose.Schema({
@@ -160,7 +189,8 @@ const userSchema = new mongoose.Schema({
         require:true,
         trim:true
     },
-    stock:[stockSchema]
+    stock:[stockSchema],
+    bill:[billSchema]
   
 
 });
