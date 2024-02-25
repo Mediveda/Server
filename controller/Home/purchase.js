@@ -24,8 +24,14 @@ exports.addBill = async (req, res) => {
       const { userId, vendorName, challanNumber, orderDate, dueDate, remark } =
         req.body;
 
+<<<<<<< HEAD
+    if (!user) {
+      return res.status(404).json({ error: "User not " });
+    }
+=======
       // Find the user by ID
       const user = await User.findById(userId);
+>>>>>>> 524e16f239ee252b0b93d99bc964a0e045527b5e
 
       if (!user) {
         return res.status(404).json({ error: "User not found" });
