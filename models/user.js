@@ -139,6 +139,11 @@ const billSchema = new mongoose.Schema({
         require:true,
         trim:true
     },
+    image:{
+        type:String,
+        require:true,
+        trim:true
+    }
 });
 
 // Parent Schema: personalinfo
