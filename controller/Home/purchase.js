@@ -18,7 +18,7 @@ exports.addBill = async (req, res) => {
   try {
     upload(req, res, async (err) => {
       if (err) {
-        return res.status(400).json({ error: "Error uploading image" });
+        return res.status(400).json({ error: "Error uploading images" });
       }
 
       const { userId, vendorName, challanNumber, orderDate, dueDate, remark } =
