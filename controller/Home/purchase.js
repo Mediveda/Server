@@ -5,26 +5,33 @@ const path = require("path");
 // Set up multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../uploads"); // Uploads will be stored in the 'uploads/' directory
+    const uploadPath = path.join(__dirname, '../uploads');
+    // Create the 'uploads' directory if it doesn't exist
+    require('fs').mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Generate a unique filename
+    cb(null, Date.now() + '-' + file.originalname);
   },
 });
 
-const upload = multer({ storage: storage }).single("image");
+const upload = multer({ storage: storage }).single('image');
 
 exports.addBill = async (req, res) => {
   try {
     upload(req, res, async (err) => {
       if (err) {
+        console.error(err); // Log the error for debugging
         return res.status(400).json({ error: "Error uploading image" });
       }
 
       const { userId, vendorName, challanNumber, orderDate, dueDate, remark } =
         req.body;
 
-
+          // Find the user by ID
+          const user = await User.findById(userId);
+   
+    
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
