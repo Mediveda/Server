@@ -5,17 +5,17 @@ const path = require("path");
 // Set up multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadPath = path.join(__dirname, '../uploads');
+    const uploadPath = path.join(__dirname, "../uploads");
     // Create the 'uploads' directory if it doesn't exist
-    require('fs').mkdirSync(uploadPath, { recursive: true });
+    require("fs").mkdirSync(uploadPath, { recursive: true });
     cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
-const upload = multer({ storage: storage }).single('image');
+const upload = multer({ storage: storage }).single("image");
 
 exports.addBill = async (req, res) => {
   try {
@@ -27,10 +27,9 @@ exports.addBill = async (req, res) => {
       const { userId, vendorName, challanNumber, orderDate, dueDate, remark } =
         req.body;
 
-          // Find the user by ID
-          const user = await User.findById(userId);
-   
-    
+      // Find the user by ID
+      const user = await User.findById(userId);
+
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -61,3 +60,29 @@ exports.addBill = async (req, res) => {
     });
   }
 };
+
+//get bill handler
+exports.getBill =  async (req, res) => {
+  try {
+    const userId = req.params.id;
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Return the bill data including the image filename
+    return res.status(200).json({
+      success: true,
+      bill: user.bill,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching bill data, please try again after some time",
+    });
+  }
+};
+
