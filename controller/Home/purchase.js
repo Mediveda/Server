@@ -21,7 +21,6 @@ exports.addBill = async (req, res) => {
   try {
     upload(req, res, async (err) => {
       if (err) {
-        console.error(err); // Log the error for debugging
         return res.status(400).json({ error: "Error uploading image" });
       }
 
