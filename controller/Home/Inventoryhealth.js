@@ -86,6 +86,7 @@ exports.stocktable = async (req, res) => {
     const items = user.stock || [];
 
     const selectedItems = items.map((item) => ({
+     
       batchNumber: item.batchNumber,
       medecineName: item.medecineName,
       category: item.category,

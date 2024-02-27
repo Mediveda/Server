@@ -19,6 +19,7 @@ exports.exptable = async (req, res) => {
     const expiredItems = items
   .filter((item) => moment().isAfter(item.expiryDate))
   .map((item) => ({
+    
     batchNumber: item.batchNumber,
     medecineName: item.medecineName,
     availablestock: item.availablestock,
@@ -64,4 +65,39 @@ exports.exptable = async (req, res) => {
   console.error("Error fetching data from MongoDB:", error);
   res.status(500).json({ success: false, error: "Internal Server Error" });
 }
+  };
+
+
+  //delete expire item
+  exports.expmed = async (req, res) => {
+    const userId = req.params.id;
+    const { batchNumber, medecineName } = req.body; 
+  
+    try {
+      // Fetch user from MongoDB using Mongoose
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      // Ensure that 'stock' array exists in the user object
+      const items = user.stock || [];
+  
+      // Filter out expired items
+      const nonExpiredItems = items.filter((item) =>  {
+        return !(batchNumber.includes(item.batchNumber) && medecineName.includes(item.medecineName));
+      });
+  
+      // Update the user's stock with non-expired items
+      user.stock = nonExpiredItems;
+  
+      // Save the updated user to the database
+      await user.save();
+  
+      res.status(200).json({ message: 'Expired medicine deleted successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
   };
