@@ -82,6 +82,17 @@ exports.login = async (req, res) => {
                 {
                     expiresIn: "24h",
                 });
+                const items = [user]|| [];
+
+                const personalinfo = items.map((item) => ({
+                    _id:item.id,
+                    firstName: item.firstName,
+                    lastName:item.lastName,
+                    medicalName: item.medicalName,
+                    email: item.email,
+                    licenceNumber: item.licenceNumber, // You need to calculate or fetch available stock based on your business logic
+                    // Add more fields as needed
+                  }));
 
             user = user.toObject();
             user.token = token;
@@ -95,7 +106,7 @@ exports.login = async (req, res) => {
             res.cookie("token", token, options).status(200).json({
                 success: true,
                 token,
-                user,
+                personalinfo,
                 message: "User Logged In Successfully...",
             });
         
