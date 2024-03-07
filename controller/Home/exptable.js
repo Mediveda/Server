@@ -13,14 +13,15 @@ exports.exptable = async (req, res) => {
     }
 
     // Ensure that 'stock' array exists in the user object
-    const items = user.stock || [];
+    const items = user.stock || []
 
 
     const expiredItems = items
   .filter((item) => moment().isAfter(item.expiryDate))
   .map((item) => ({
     
-    batchNumber: item.batchNumber,
+    batchNumber:
+     item.batchNumber,
     medecineName: item.medecineName,
     availablestock: item.availablestock,
     price: item.price,
