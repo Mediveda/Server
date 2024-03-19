@@ -38,7 +38,8 @@ exports.additem = async (req, res) => {
       user.stock[existingMedicineIndex].availablestock += availablestock;
       await user.save();
       return res.status(200).json({ message: "Medicine updated" });
-    } else {
+    }
+    else {
       // Create a new Additem instance and push it to the array
       user.stock.push({
         batchNumber,
