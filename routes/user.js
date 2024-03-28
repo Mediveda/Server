@@ -6,6 +6,7 @@ const {additem , stocktable} = require("../controller/Home/Inventoryhealth");
 const {exptable,expmed} = require("../controller/Home/exptable");
 const {addBill, getBill} = require("../controller/Home/purchase");
 const { Search } = require('../controller/Home/PointOfSale');
+const {personalInfoUpdate} = require('../controller/Home/update');
 
 
 
@@ -19,6 +20,7 @@ router.post("/addbill", addBill);
 router.get("/getbill/:id", getBill);
 router.delete("/deleteexpmed/:id",expmed)
 router.get("/search/:id/:query",Search)
+router.put("/:id",personalInfoUpdate);
 
 
 
