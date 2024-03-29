@@ -1,44 +1,47 @@
-const User = require("../../models/user");
+const express = require("express");
+const router = express.Router();
+const multer = require("multer"); // For handling file uploads
+const User = require("../models/user");
 
-exports.personalInfoUpdate = async (req, res) => {
-  const { id } = req.params;
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    medicalName,
-    licenceNumber,
-    countryName,
-    stateName,
-    cityName,
-    postalCode,
-  } = req.body;
+// Multer configuration for handling file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Directory where uploaded files will be stored
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname); // Renaming file with current timestamp
+  },
+});
+const upload = multer({ storage: storage }).single("image");
 
+// Update user personal info including profile picture
+exports.profileUpdate = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(
-      id,
-      {
+    upload(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ error: "Error uploading image" });
+      }
+      const userId = req.params.userId;
+      const { firstName, lastName, email, password, medicalName, postalCode, licenseNumber } = req.body;
+
+      // Update user's personal information
+      const updatedUserInfo = {
         firstName,
         lastName,
         email,
         password,
         medicalName,
-        licenceNumber,
-        countryName,
-        stateName,
-        cityName,
         postalCode,
-      },
-      { new: true }
-    );
+        licenseNumber,
+        profilePic: req.file ? req.file.filename : undefined,
+      };
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+      const updatedUser = await User.findByIdAndUpdate(userId, updatedUserInfo, { new: true });
 
-    res.status(200).json(user);
+      res.json({ message: "Profile updated successfully", updatedProfile: updatedUser });
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
