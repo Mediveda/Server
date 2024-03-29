@@ -20,7 +20,7 @@ router.post("/addbill", addBill);
 router.get("/getbill/:id", getBill);
 router.delete("/deleteexpmed/:id",expmed)
 router.get("/search/:id/:query",Search)
-router.put("/:id",personalInfoUpdate);
+router.put("/update/:id",personalInfoUpdate);
 
 
 
