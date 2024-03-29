@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer"); // For handling file uploads
-const User = require("../models/user");
+const User = require("../../models/user");
 
 // Multer configuration for handling file uploads
 const storage = multer.diskStorage({
@@ -36,9 +36,10 @@ exports.profileUpdate = async (req, res) => {
         profilePic: req.file ? req.file.filename : undefined,
       };
 
-      const updatedUser = await User.findByIdAndUpdate(userId, updatedUserInfo, { new: true });
+       const updatedUser = await User.findByIdAndUpdate(userId, updatedUserInfo, { new: true });
+     
 
-      res.json({ message: "Profile updated successfully", updatedProfile: updatedUser });
+      res.json({ message: "Profile updated successfully", updatedProfile: updatedUser});
     });
   } catch (error) {
     console.error(error);
