@@ -17,6 +17,7 @@ app.use("/api/v1", user);
 
 // Serve the 'uploads' directory statically
 app.use('/api/v1/uploads', express.static(path.join(__dirname, './controller/uploads')));
+app.use('/api/v1/profilePic',express.static(path.join(__dirname, './controller/profilePic')));
 
 app.get("/", (req, res) => {
     res.send("HOME PAGE");

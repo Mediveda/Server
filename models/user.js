@@ -194,6 +194,9 @@ const userSchema = new mongoose.Schema({
         require:true,
         trim:true
     },
+    profilePic:{
+        type:String
+    },
     stock:[stockSchema],
     bill:[billSchema]
   

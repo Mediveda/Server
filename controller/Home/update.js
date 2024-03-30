@@ -1,18 +1,21 @@
 const express = require("express");
-const router = express.Router();
 const multer = require("multer"); // For handling file uploads
 const User = require("../../models/user");
+const path = require("path");
 
 // Multer configuration for handling file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Directory where uploaded files will be stored
+    const uploadPath = path.join(__dirname,"../profilePic");
+    require("fs").mkdirSync(uploadPath,{
+      recursive:true });
+    cb(null, uploadPath); 
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Renaming file with current timestamp
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
-const upload = multer({ storage: storage }).single("image");
+const upload = multer({ storage: storage }).single("profilePic");
 
 // Update user personal info including profile picture
 exports.profileUpdate = async (req, res) => {
@@ -21,8 +24,14 @@ exports.profileUpdate = async (req, res) => {
       if (err) {
         return res.status(400).json({ error: "Error uploading image" });
       }
-      const userId = req.params.userId;
-      const { firstName, lastName, email, password, medicalName, postalCode, licenseNumber } = req.body;
+
+      const { firstName, lastName, email, password, medicalName, licenseNumber, countryName, stateName, cityName, postalCode } = req.body;
+
+      const {id} = req.params;
+
+      if(!id){
+        return res.status(404).json({error:"User not found"})
+      }
 
       // Update user's personal information
       const updatedUserInfo = {
@@ -31,15 +40,24 @@ exports.profileUpdate = async (req, res) => {
         email,
         password,
         medicalName,
-        postalCode,
         licenseNumber,
+        countryName,
+        cityName,
+        stateName,
+        postalCode,
         profilePic: req.file ? req.file.filename : undefined,
       };
+      
+      console.log("Updating user with ID:", id);
+      console.log("Updated user info:", updatedUserInfo);
 
-       const updatedUser = await User.findByIdAndUpdate(userId, updatedUserInfo, { new: true });
-     
+      const updatedUser = await User.findByIdAndUpdate(id, updatedUserInfo, { new: true });
 
-      res.json({ message: "Profile updated successfully", updatedProfile: updatedUser});
+      if (!updatedUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json({ message: "Profile updated successfully", updatedProfile: updatedUserInfo });
     });
   } catch (error) {
     console.error(error);
