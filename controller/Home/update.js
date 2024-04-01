@@ -25,7 +25,7 @@ exports.profileUpdate = async (req, res) => {
         return res.status(400).json({ error: "Error uploading image" });
       }
 
-      const { firstName, lastName, email, password, medicalName, licenseNumber, countryName, stateName, cityName, postalCode } = req.body;
+      const { firstName, lastName, email, medicalName, licenseNumber, countryName, stateName, cityName, postalCode } = req.body;
 
       const {id} = req.params;
 
@@ -38,7 +38,6 @@ exports.profileUpdate = async (req, res) => {
         firstName,
         lastName,
         email,
-        password,
         medicalName,
         licenseNumber,
         countryName,
