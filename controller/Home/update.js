@@ -48,8 +48,7 @@ exports.profileUpdate = async (req, res) => {
         profilePic: req.file ? req.file.filename : undefined,
       };
       
-      console.log("Updating user with ID:", id);
-      console.log("Updated user info:", updatedUserInfo);
+    
 
       const updatedUser = await User.findByIdAndUpdate(id, updatedUserInfo, { new: true });
 
