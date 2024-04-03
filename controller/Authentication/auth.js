@@ -18,9 +18,10 @@ exports.signup = async (req, res) => {
             });
         }
         //password secure
-        let hashedPassword;
+      
         try {
             hashedPassword = await bcrypt.hash(password, 10);
+            console.log(hashedPassword)
         }
         catch (err) {
             return res.status(500).json({
@@ -90,7 +91,9 @@ exports.login = async (req, res) => {
                     lastName:item.lastName,
                     medicalName: item.medicalName,
                     email: item.email,
-                    licenceNumber: item.licenceNumber, // You need to calculate or fetch available stock based on your business logic
+                    licenceNumber: item.licenceNumber,
+                    
+                    // You need to calculate or fetch available stock based on your business logic
                     // Add more fields as needed
                   }));
 

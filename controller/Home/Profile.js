@@ -55,10 +55,48 @@ exports.profileUpdate = async (req, res) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      res.json({ message: "Profile updated successfully", updatedProfile: updatedUserInfo });
+      res.status(200).json({success:true,
+        message: "Profile updated successfully", 
+        updatedProfile: updatedUserInfo });
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+exports.getProfile =  async (req, res) => {
+    try {
+      const userId = req.params.id;
+      // Find the user by ID
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      const items = [user]|| [];
+      const personalinfo = items.map((item) => ({
+        _id:item.id,
+        firstName: item.firstName,
+        lastName:item.lastName,
+        medicalName: item.medicalName,
+        email: item.email,
+        licenceNumber: item.licenceNumber,
+        profilepic:item.profilePic // You need to calculate or fetch available stock based on your business logic
+        // Add more fields as needed
+      }));
+  
+      // Return the bill data including the image filename
+      return res.status(200).json({
+        success: true,
+        profile : personalinfo,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: "Error fetching bill data, please try again after some time",
+      });
+    }
+  };
+  
+  
