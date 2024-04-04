@@ -81,9 +81,13 @@ exports.getProfile =  async (req, res) => {
         medicalName: item.medicalName,
         email: item.email,
         licenceNumber: item.licenceNumber,
-        profilepic:item.profilePic // You need to calculate or fetch available stock based on your business logic
-        // Add more fields as needed
-      }));
+        countryName:item.countryName,
+        stateName:item.stateName,
+        cityName:item.cityName,
+        postalCode:item.postalCode,
+        profilepic:item.profilePic,
+
+            }));
   
       // Return the bill data including the image filename
       return res.status(200).json({
